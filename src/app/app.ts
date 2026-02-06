@@ -21,6 +21,7 @@ export class App implements OnInit {
   isEditing = false;
   isLoading = false;
   errorMessage = '';
+  isDialogOpen = false;
 
   ngOnInit(): void {
     this.loadStudents();
@@ -55,6 +56,7 @@ export class App implements OnInit {
         next: () => {
           this.resetForm();
           this.loadStudents();
+          this.closeDialog();
         },
         error: () => {
           this.errorMessage = 'Failed to update student.';
@@ -68,6 +70,7 @@ export class App implements OnInit {
       next: () => {
         this.resetForm();
         this.loadStudents();
+        this.closeDialog();
       },
       error: () => {
         this.errorMessage = 'Failed to create student.';
@@ -85,6 +88,7 @@ export class App implements OnInit {
     };
     this.isEditing = true;
     this.errorMessage = '';
+    this.openDialog();
   }
 
   deleteStudent(student: Student): void {
@@ -101,11 +105,25 @@ export class App implements OnInit {
 
   cancelEdit(): void {
     this.resetForm();
+    this.closeDialog();
   }
 
   private resetForm(): void {
     this.form = this.emptyForm();
     this.isEditing = false;
+  }
+
+  openDialog(): void {
+    this.isDialogOpen = true;
+  }
+
+  startAdd(): void {
+    this.resetForm();
+    this.openDialog();
+  }
+
+  closeDialog(): void {
+    this.isDialogOpen = false;
   }
 
   private emptyForm(): StudentForm {

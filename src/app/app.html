@@ -5,36 +5,11 @@
         <h1>{{ title }}</h1>
         <p class="subtitle">Manage students from the ASP.NET Core API.</p>
       </div>
-      <button class="btn ghost" type="button" (click)="loadStudents()">Reload</button>
+      <div class="header-actions">
+        <button class="btn ghost" type="button" (click)="loadStudents()">Reload</button>
+        <button class="btn primary" type="button" (click)="startAdd()">Add Student</button>
+      </div>
     </div>
-
-    <form class="form" (ngSubmit)="saveStudent()">
-      <div class="field">
-        <label for="name">Name</label>
-        <input id="name" name="name" [(ngModel)]="form.name" placeholder="Student name" required />
-      </div>
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" [(ngModel)]="form.email" placeholder="student@example.com" required />
-      </div>
-      <div class="field">
-        <label for="phone">Phone</label>
-        <input id="phone" name="phone" [(ngModel)]="form.phone" placeholder="+8801..." />
-      </div>
-      <div class="field full">
-        <label for="address">Address</label>
-        <input id="address" name="address" [(ngModel)]="form.address" placeholder="Address" />
-      </div>
-
-      <div class="actions">
-        <button class="btn primary" type="submit">
-          {{ isEditing ? 'Update Student' : 'Add Student' }}
-        </button>
-        <button class="btn ghost" type="button" (click)="cancelEdit()" [disabled]="!isEditing">
-          Cancel
-        </button>
-      </div>
-    </form>
 
     <p class="message error" *ngIf="errorMessage">{{ errorMessage }}</p>
     <p class="message" *ngIf="isLoading">Loading...</p>
@@ -71,5 +46,40 @@
     </div>
   </section>
 </main>
+
+<div class="dialog-backdrop" *ngIf="isDialogOpen" (click)="closeDialog()"></div>
+<div class="dialog" *ngIf="isDialogOpen" role="dialog" aria-modal="true">
+  <div class="dialog-header">
+    <h2>{{ isEditing ? 'Edit Student' : 'Add Student' }}</h2>
+    <button class="btn ghost" type="button" (click)="closeDialog()">Close</button>
+  </div>
+  <form class="form" (ngSubmit)="saveStudent()" (click)="$event.stopPropagation()">
+    <div class="field">
+      <label for="name">Name</label>
+      <input id="name" name="name" [(ngModel)]="form.name" placeholder="Student name" required />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" [(ngModel)]="form.email" placeholder="student@example.com" required />
+    </div>
+    <div class="field">
+      <label for="phone">Phone</label>
+      <input id="phone" name="phone" [(ngModel)]="form.phone" placeholder="+8801..." />
+    </div>
+    <div class="field full">
+      <label for="address">Address</label>
+      <input id="address" name="address" [(ngModel)]="form.address" placeholder="Address" />
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="submit">
+        {{ isEditing ? 'Update Student' : 'Add Student' }}
+      </button>
+      <button class="btn ghost" type="button" (click)="cancelEdit()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
 
 <router-outlet />
